@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fixing Bugs...</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .bug {
+      position: absolute;
+      font-size: 2rem;
+      cursor: pointer;
+      user-select: none;
+      animation: crawl 10s linear infinite;
+    }
+
+    @keyframes crawl {
+      from { transform: translate(0, 0); }
+      to { transform: translate(100vw, 100vh); }
+    }
+
+    .hammer {
+      position: absolute;
+      font-size: 2.5rem;
+      pointer-events: none;
+      transform: rotate(-45deg);
+      transition: transform 0.1s;
+    }
+
+    .smashed {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <h1>🛠 Fixing bugs...</h1>
+  <div class="hammer">🔨</div>
+
+  <script>
+    const hammer = document.querySelector(".hammer");
+
+    // Make hammer follow the mouse
+    document.addEventListener("mousemove", (e) => {
+      hammer.style.left = e.pageX + "px";
+      hammer.style.top = e.pageY + "px";
+    });
+
+    // Hammer smash effect
+    document.addEventListener("click", () => {
+      hammer.style.transform = "rotate(0deg) scale(1.2)";
+      setTimeout(() => {
+        hammer.style.transform = "rotate(-45deg) scale(1)";
+      }, 100);
+    });
+
+    // Create bugs
+    function spawnBug() {
+      const bug = document.createElement("div");
+      bug.className = "bug";
+      bug.textContent = "🐞";
+      bug.style.left = Math.random() * window.innerWidth + "px";
+      bug.style.top = Math.random() * window.innerHeight + "px";
+      document.body.appendChild(bug);
+
+      // Click to squash bug
+      bug.addEventListener("click", () => {
+        bug.textContent = "💥";
+        bug.classList.add("smashed");
+        setTimeout(() => bug.remove(), 500);
+      });
+
+      // Remove after some time
+      setTimeout(() => {
+        if (document.body.contains(bug)) bug.remove();
+      }, 15000);
+    }
+
+    // Keep spawning bugs
+    setInterval(spawnBug, 1500);
+  </script>
+</body>
+</html>
